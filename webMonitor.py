@@ -26,6 +26,7 @@ sendingEmail = config.get('Conditions', 'sendingEmail')
 accountPSWD = config.get('Conditions', 'accountPSWD')
 recipientList = [config.get('Conditions', 'recipient1'), config.get('Conditions', 'recipient2')]
 mailSubject = config.get('Conditions', 'mailSubject')
+maxEmails = int(config.get('Conditions', 'maxEmails'))
 
 #Set up users for email
 gmail_user = sendingEmail
@@ -64,7 +65,8 @@ response = urlopen(url).read()
 currentHash = hashlib.sha224(response).hexdigest()
 print("running")
 time.sleep(frequency)
-while True:
+counter = 0
+while counter < maxEmails:
     try:
         now = datetime.now()
         print("checking for changes @", now)
@@ -89,6 +91,7 @@ while True:
 
         # if something changed in the hashes
         else:
+            counter += 1
             # notify
             now = datetime.now()
             print("something changed @", now)
